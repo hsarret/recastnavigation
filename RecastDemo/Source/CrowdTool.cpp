@@ -666,17 +666,20 @@ void CrowdToolState::addAgent(const float* p)
 	ap.obstacleAvoidanceType = (unsigned char)m_toolParams.m_obstacleAvoidanceType;
 	ap.separationWeight = m_toolParams.m_separationWeight;
 	
-	int idx = crowd->addAgent(p, &ap);
-	if (idx != -1)
+	for ( int i = 0; i < 100; ++i )
 	{
-		if (m_targetRef)
-			crowd->requestMoveTarget(idx, m_targetRef, m_targetPos);
-		
-		// Init trail
-		AgentTrail* trail = &m_trails[idx];
-		for (int i = 0; i < AGENT_MAX_TRAIL; ++i)
-			dtVcopy(&trail->trail[i*3], p);
-		trail->htrail = 0;
+		int idx = crowd->addAgent( p, &ap );
+		if ( idx != -1 )
+		{
+			if ( m_targetRef )
+				crowd->requestMoveTarget( idx, m_targetRef, m_targetPos );
+
+			// Init trail
+			AgentTrail* trail = &m_trails[ idx ];
+			for ( int i = 0; i < AGENT_MAX_TRAIL; ++i )
+				dtVcopy( &trail->trail[ i * 3 ], p );
+			trail->htrail = 0;
+		}
 	}
 }
 
